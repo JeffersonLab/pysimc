@@ -1,0 +1,66 @@
+# H(e,e'p) elastic, HMS (electron) + SOS (proton) -- equivalent of
+# legacy infiles/eep_hydrogen_q8.inp (Ebeam 8.8 GeV).
+
+[run]
+mode = "trials"            # or "accepted" (legacy ngen > 0)
+n_trials = 2_000_000
+chunk_trials = 200_000     # unit of parallel work / RNG stream
+batch_size = 50_000
+seed = 12345
+
+[beam]
+energy = 8800.0
+energy_spread_pct = 0.05
+charge_mC = 1.0
+xwid = 0.008868
+ywid = 0.004235
+raster_pattern = 1
+raster_1 = 0.1
+raster_2 = 0.1
+
+[target]
+A = 1.0
+Z = 1.0
+mass_amu = 1.007276
+rho = 0.07332
+thickness_mg_cm2 = 295.172
+
+[electron_arm]
+spectrometer = "hms"
+side = "right"
+momentum = 4531.0
+theta_deg = 25.90
+delta = [-10.0, 10.0]
+xptar_mrad = [-100.0, 100.0]
+yptar_mrad = [-50.0, 50.0]
+
+[hadron_arm]
+spectrometer = "sos"
+side = "left"
+momentum = 5122.0
+theta_deg = 22.73
+delta = [-15.0, 15.0]
+xptar_mrad = [-50.0, 50.0]
+yptar_mrad = [-90.0, 90.0]
+
+[reaction]
+name = "hydrogen_elastic"
+
+[radiation]
+model = "none"             # "mo_tsai" once radc.f is ported
+
+[output]
+directory = "results/hydrogen_elastic"
+ntuple = false
+
+[[output.histograms]]
+name = "Q2"
+var = "Q2"
+bins = 60
+range = [6e6, 10e6]        # MeV^2 (Q2 ~ 8 GeV^2)
+
+[[output.histograms]]
+name = "p_delta"
+var = "p_delta"
+bins = 60
+range = [-15.0, 15.0]
